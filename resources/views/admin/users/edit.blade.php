@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Edit User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         #sidebar-wrapper {
@@ -59,10 +59,44 @@
     </aside>
 
     <div class="content-wrapper">
-        <h1>Welcome to Admin Dashboard</h1>
-        <p>Hello, {{ Auth::user()->name }}!</p>
-    </div>
+        <h1>Edit User</h1>
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Password (biarkan kosong jika tidak diubah)</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
 
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="is_admin" class="form-label">Role</label>
+                <select class="form-select" id="is_admin" name="is_admin" required>
+                    <option value="0" {{ $user->is_admin == 0 ? 'selected' : '' }}>User Biasa</option>
+                    <option value="1" {{ $user->is_admin == 1 ? 'selected' : '' }}>Admin</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+       
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
